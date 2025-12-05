@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Order {
+public class Catalog {
     private UUID id;
     private List<Product> products;
-    public Order(){};
+    public Catalog(){};
     private Double discount=0.0;
 
     public List<Product> getProducts() {
@@ -56,13 +56,13 @@ public class Order {
             return this;
         }
 
-        public Order build() {
-            Order order = new Order();
+        public Catalog build() {
+            Catalog catalog = new Catalog();
 
-            order.products = this.products;
-            order.id = UUID.randomUUID();;
-            order.discount = this.discount;
-            return order;
+            catalog.products = this.products;
+            catalog.id = UUID.randomUUID();;
+            catalog.discount = this.discount;
+            return catalog;
         }
     }
 }

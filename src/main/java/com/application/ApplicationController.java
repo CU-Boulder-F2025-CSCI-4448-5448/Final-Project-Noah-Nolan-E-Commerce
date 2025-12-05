@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import order.Order;
+import order.Cart;
+import order.Catalog;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +21,11 @@ public class ApplicationController {
     private static final String boarderMessage = "Hello and Welcome to the Shrek Merch Shop. Use code \'FARQUAAD\' for 25% off all hats!";
     private final AtomicLong counter = new AtomicLong();
     ProductFactory productFactory = new ProductFactory();
-    List<Product> cart= new ArrayList<Product>();
-    Order catelog = new Order();
-    Order myOrder = new Order();
+    Catalog catalog = new Catalog();
 
     @GetMapping("/")
     public String index(Model model) {
-        catelog = new Order.Builder()
+        catalog = new Catalog.Builder()
                 .addProduct(productFactory.createHat("Shrek Mask", 20.00))
                 .addProduct(productFactory.createShirt("Shrek T-Shirt", 30.00))
                 .addProduct(productFactory.createJacket("Leather Vest", 150.00))
@@ -35,15 +34,16 @@ public class ApplicationController {
 
 
         model.addAttribute("message", boarderMessage);
-        model.addAttribute("products", catelog.getProducts());
-        model.addAttribute("cart", cart);
+        model.addAttribute("products", catalog.getProducts());
+        model.addAttribute("cart", Cart.getCart().getItems());
+        model.addAttribute("cartTotal", Cart.getCart().getTotal());
         return "index";
     }
 
     @PostMapping("/add")
     public String addToCart(@RequestParam String productID) {
-        Product product = catelog.getProduct(productID);
-        cart.add(product);
+        Product product = catalog.getProduct(productID);
+        Cart.getCart().add(product);
 
         // 3. Redirect back to the home page (refreshes the view)
         return "redirect:/";
@@ -52,7 +52,7 @@ public class ApplicationController {
     @PostMapping("/checkout")
     public String checkout(@RequestParam String paymentType, Model model) {
         // calculate total cart amount
-        double amount = cart.stream().mapToDouble(Product::getPrice).sum();
+        double amount = Cart.getCart().getTotal();
 
         // reuse your existing pay logic
         PaymentStrategy strategy;
@@ -65,6 +65,8 @@ public class ApplicationController {
 
         String result = (strategy != null) ? strategy.pay(amount) : "Invalid payment method!";
         model.addAttribute("result", result);
+
+        Cart.getCart().clear();
 
         return "paymentResult"; // show paymentResult.html
     }
