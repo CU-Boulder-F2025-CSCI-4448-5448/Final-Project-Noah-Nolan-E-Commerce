@@ -11,7 +11,6 @@ public class Order {
     private List<Product> products;
     public Order(){};
     private Double discount=0.0;
-    private PayStrategy payStragety;
 
     public List<Product> getProducts() {
         return products;
