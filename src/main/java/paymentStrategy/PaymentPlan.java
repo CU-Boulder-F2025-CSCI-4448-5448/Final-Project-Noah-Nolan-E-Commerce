@@ -1,10 +1,9 @@
 package paymentStrategy;
 
-public class PaymentPlan extends PayStragety {
+public class PaymentPlan implements PaymentStrategy {
     @Override
-    public void pay(Double amount) {
+    public String pay(double amount) {
         double monthlyPay = amount /12;
-        System.out.println("Payment Plan set up: Pay $" + monthlyPay + " for the next 12 months.");
-
+        return "Payment Plan set up: Pay $" + monthlyPay + " for the next 12 months.";
     }
 }
