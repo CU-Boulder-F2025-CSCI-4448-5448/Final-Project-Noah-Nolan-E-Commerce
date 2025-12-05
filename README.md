@@ -4,6 +4,6 @@ We intend to code an e-commerce platform, titled "The _____ E-Commerce Website",
 (I think Shrek merch would be funny). We'll be sticking with Java as our OO programming language, and plan to implement features like 
 product selection, payment, and order fulfillment. We believe there is room for a variety of OO patterns to be implemented with this project.
 
-Good real-world choice — E-commerce platform provides excellent opportunities for multiple design patterns 
+Instructor comment: Good real-world choice — E-commerce platform provides excellent opportunities for multiple design patterns 
 (Factory for products, Strategy for payment methods, Observer for order notifications, Builder for complex orders, etc.)
 and naturally supports dependency injection through Spring Boot. Strong practical learning potential.
