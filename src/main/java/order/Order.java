@@ -10,12 +10,24 @@ import java.util.UUID;
 public class Order {
     private UUID id;
     private List<Product> products;
-    private Order(){};
+    public Order(){};
     private Double discount=0.0;
     private PayStragety payStragety;
 
     public List<Product> getProducts() {
         return products;
+    }
+
+    public Product getProduct(String ID){
+        for(Product p : products){
+            if(p.getId().toString().equals(ID))
+                return p;
+        }
+        return null;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public Double getTotalPrice() {
@@ -39,7 +51,6 @@ public class Order {
         }
     }
 
-
     public static class Builder {
         private List<Product> products = new ArrayList<Product>();
         private Double discount = 0.0;
@@ -49,12 +60,16 @@ public class Order {
             products.add(product);
             return this;
         }
+        public Builder addProducts(List<Product> products) {
+
+            this.products.addAll(products);
+            return this;
+        }
 
         public Builder addDiscount(Double discount){
             this.discount = discount;
             return this;
         }
-
 
         public Order build() {
             Order order = new Order();

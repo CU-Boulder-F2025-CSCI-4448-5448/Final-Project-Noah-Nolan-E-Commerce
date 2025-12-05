@@ -9,6 +9,7 @@ public class Product {
         Socks,
         Jackets,
         Pants,
+        MiscellaneousItem,
         Shoes
     }
     private final UUID id;

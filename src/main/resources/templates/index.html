@@ -1,27 +1,60 @@
 <!DOCTYPE html>
 <!--Most of this was written with the help of Gemini-->
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Swamp Shop Checkout</title>
+    <title>The Shrek E-Commerce Website!</title>
 </head>
 <body>
-<h1 style="background: lightgreen; padding: 10px;" >Swamp Shop Checkout</h1>
+<h1 style="background: lightgreen; padding: 10px;" >The Shrek E-Commerce Website!</h1>
 
 <!-- Display Results from Java if they exist -->
-<div th:if="${message}" style="background: lightgreen; padding: 10px;">
-    <h3 th:text="${message}"></h3>
+<div th:if="${message}" style="padding: 10px;">
+    <h1 th:text="${message}"></h1>
     <p>Total Paid: <span th:text="${total}"></span></p>
 </div>
 
-<!-- The Form: Triggers the Java @PostMapping("/checkout") -->
-<form action="/checkout" method="post">
+<!-- SECTION 1: ITEMS IN STOCK -->
+<h3>Current Items In Stock:</h3>
+<ul>
+    <!-- Loop through the INVENTORY (products) -->
+    <li th:each="product : ${products}" style="margin-bottom: 5px;">
+
+        <!-- This form allows us to send data to the /add endpoint -->
+        <form action="/add" method="post" style="display: inline;">
+
+            <!-- Display Name and Price -->
+            <span th:text="${product.name}" style="font-weight: bold;">Name</span>
+            <span th:text="' ($' + ${product.price} + ')'">($0.00)</span>
+
+            <!-- Hidden input stores the name of the product we want to add -->
+            <input type="hidden" name="productID" th:value="${product.id}" />
+
+            <!-- The Add Button -->
+            <button type="submit" style="margin-left: 10px;">Add to Cart</button>
+        </form>
+    </li>
+</ul>
+
+<hr style="margin: 20px 0;">
+
+<!-- SECTION 2: CHECKOUT & CART -->
+<form action="/checkout" method="post" style="background: #f0f0f0; padding: 20px;">
 
     <h3>Your Cart:</h3>
-    <ul>
-        <li>Shrek Mask ($20.00)</li>
-        <li>Shrek T-Shirt ($30.00)</li>
+
+    <!-- Loop through the CART (from session) -->
+    <ul th:if="${not #lists.isEmpty(cart)}">
+        <li th:each="cartItem : ${cart}">
+            <span th:text="${cartItem.getName()}">Item</span>
+            <span th:text="' - $' + ${cartItem.getPrice()}"></span>
+        </li>
     </ul>
 
+    <!-- Message if cart is empty -->
+    <p th:if="${#lists.isEmpty(cart)}" style="color: gray; font-style: italic;">
+        Your swamp cart is empty! Add items above.
+    </p>
+
+    <br>
     <label>Choose Payment:</label>
     <select name="paymentType">
         <option value="PLAN">Payment Plan (4 months)</option>
