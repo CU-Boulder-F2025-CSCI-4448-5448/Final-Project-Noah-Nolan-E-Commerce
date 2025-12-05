@@ -64,5 +64,25 @@ public class ApplicationController {
         model.addAttribute("result", result);
         return "paymentResult";  // This HTML page will display the result
     }
+
+    @PostMapping("/checkout")
+    public String checkout(@RequestParam String paymentType, Model model) {
+        // calculate total cart amount
+        double amount = cart.stream().mapToDouble(Product::getPrice).sum();
+
+        // reuse your existing pay logic
+        PaymentStrategy strategy;
+        switch(paymentType.toLowerCase()) {
+            case "creditcard": strategy = new CreditCard(); break;
+            case "cash": strategy = new Cash(); break;
+            case "paymentplan": strategy = new PaymentPlan(); break;
+            default: strategy = null;
+        }
+
+        String result = (strategy != null) ? strategy.pay(amount) : "Invalid payment method!";
+        model.addAttribute("result", result);
+
+        return "paymentResult"; // show paymentResult.html
+    }
 }
 
