@@ -8,6 +8,10 @@ import order.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import paymentStrategy.Cash;
+import paymentStrategy.CreditCard;
+import paymentStrategy.PaymentPlan;
+import paymentStrategy.PaymentStrategy;
 import products.Product;
 import products.ProductFactory;
 
@@ -43,6 +47,22 @@ public class ApplicationController {
 
         // 3. Redirect back to the home page (refreshes the view)
         return "redirect:/";
+    }
+
+    @GetMapping("/{type}")
+    public String pay(@PathVariable String type, @RequestParam double amount, Model model) {
+        PaymentStrategy strategy;
+
+        switch(type.toLowerCase()) {
+            case "creditcard": strategy = new CreditCard(); break;
+            case "cash": strategy = new Cash(); break;
+            case "paymentplan": strategy = new PaymentPlan(); break;
+            default: strategy = null;
+        }
+
+        String result = (strategy != null) ? strategy.pay(amount) : "Invalid payment method!";
+        model.addAttribute("result", result);
+        return "paymentResult";  // This HTML page will display the result
     }
 }
 

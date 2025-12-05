@@ -11,7 +11,7 @@ public class Order {
     private List<Product> products;
     public Order(){};
     private Double discount=0.0;
-    private PayStragety payStragety;
+    private PayStrategy payStragety;
 
     public List<Product> getProducts() {
         return products;
@@ -35,19 +35,6 @@ public class Order {
             total += product.getPrice();
         }
         return total*(1-discount);
-    }
-
-    public void setPayStragety(PayStragety payStragety) {
-        this.payStragety = payStragety;
-    }
-
-    public void checkout() {
-        Double totalPrice = getTotalPrice();
-        if (payStragety == null) {
-            System.out.println("No payment method selected!");
-        } else {
-            payStragety.pay(totalPrice);
-        }
     }
 
     public static class Builder {
