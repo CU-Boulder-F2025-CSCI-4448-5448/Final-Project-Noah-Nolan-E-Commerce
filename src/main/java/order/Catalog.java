@@ -24,10 +24,6 @@ public class Catalog {
         return null;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     public Double getTotalPrice() {
         Double total = 0.0;
         for (Product product : products) {
@@ -43,16 +39,6 @@ public class Catalog {
 
         public Builder addProduct(Product product) {
             products.add(product);
-            return this;
-        }
-        public Builder addProducts(List<Product> products) {
-
-            this.products.addAll(products);
-            return this;
-        }
-
-        public Builder addDiscount(Double discount){
-            this.discount = discount;
             return this;
         }
 

@@ -49,7 +49,6 @@ public class ApplicationController {
         Product product = catalog.getProduct(productID);
         Cart.getCart().add(product);
 
-        // 3. Redirect back to the home page (refreshes the view)
         return "redirect:/";
     }
 
@@ -67,7 +66,6 @@ public class ApplicationController {
         }
 
 
-        // 3. Redirect back to the home page (refreshes the view)
         return "redirect:/";
     }
 
@@ -76,7 +74,6 @@ public class ApplicationController {
         Cart cart = Cart.getCart();
         double cartTotal = cart.getTotal();
 
-        // 1. Choose the right strategy
         PaymentStrategy strategy;
         switch (paymentMethod.toLowerCase()) {
             case "creditcard": strategy = new CreditCard(); break;
@@ -99,16 +96,13 @@ public class ApplicationController {
 
         }
 
-        // 2. Calculate the strategy-adjusted total (keeps strategy relevant)
         double finalAmount =strategy.calculateFinalAmount(cartTotal);
 
-        // 3. Add to model
         model.addAttribute("cart", cart.getItems());
-        model.addAttribute("cartTotal", cartTotal);      // original total
-        model.addAttribute("finalAmount", finalAmount);  // strategy-adjusted total
+        model.addAttribute("cartTotal", cartTotal);
+        model.addAttribute("finalAmount", finalAmount);
         model.addAttribute("paymentMethod", paymentMethod);
 
-        // 4. Return the correct payment page
         switch (paymentMethod.toLowerCase()) {
             case "creditcard": return "cardPayment";
             case "cash": return "cashPayment";
