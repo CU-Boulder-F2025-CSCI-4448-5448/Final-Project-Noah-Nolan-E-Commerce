@@ -2,7 +2,7 @@ package order;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import products.Product;
+import com.application.products.Product;
 
 import static org.junit.jupiter.api.Assertions.*;
 

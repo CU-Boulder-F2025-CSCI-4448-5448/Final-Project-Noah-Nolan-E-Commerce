@@ -1,6 +1,6 @@
 package order;
 
-import products.Product;
+import com.application.products.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,14 @@ import java.util.UUID;
 public class Catalog {
     private UUID id;
     private List<Product> products;
-    public Catalog(){};
+    private Catalog(){};
     private Double discount=0.0;
 
     public List<Product> getProducts() {
-        return products;
+        if (products == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(products);
     }
 
     public Product getProduct(String ID){

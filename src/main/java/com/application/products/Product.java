@@ -1,4 +1,4 @@
-package products;
+package com.application.products;
 
 import java.util.UUID;
 
@@ -13,13 +13,13 @@ public class Product {
         Shoes
     }
     private final UUID id;
-    protected String name;
+    private String name;
     private double price;
     private Categories category;
 
 
     public Product(String name, double price, Categories category) {
-        this.id = UUID.randomUUID();;
+        this.id = UUID.randomUUID();
         this.name = name;
         this.price = price;
         this.category = category;

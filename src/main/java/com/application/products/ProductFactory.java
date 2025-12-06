@@ -1,7 +1,9 @@
-package products;
+package com.application.products;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ProductFactory {
-
     public Product createHat(String productName, Double price) {
         return new Product(productName, price, Product.Categories.Hats);
     }

@@ -1,6 +1,6 @@
 package productDecorator;
 
-import products.Product;
+import com.application.products.Product;
 
 public abstract class ProductDecorator extends Product {
 
