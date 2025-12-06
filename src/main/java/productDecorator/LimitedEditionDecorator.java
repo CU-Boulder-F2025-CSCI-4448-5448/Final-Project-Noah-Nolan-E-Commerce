@@ -5,7 +5,7 @@ import products.Product;
 public class LimitedEditionDecorator extends ProductDecorator{
     private double limitedEditionAddOn = 0;
 
-    protected LimitedEditionDecorator(Product product, String productName, double price, double limitedEditionAddOn) {
+    protected LimitedEditionDecorator(Product product, double limitedEditionAddOn) {
         super(product);
         this.limitedEditionAddOn = limitedEditionAddOn;
     }

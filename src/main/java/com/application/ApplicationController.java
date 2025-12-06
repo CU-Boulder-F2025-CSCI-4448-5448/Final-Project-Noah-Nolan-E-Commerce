@@ -2,6 +2,7 @@ package com.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 import order.Cart;
@@ -13,6 +14,7 @@ import paymentStrategy.Cash;
 import paymentStrategy.CreditCard;
 import paymentStrategy.PaymentPlan;
 import paymentStrategy.PaymentStrategy;
+import productDecorator.DiscountDecorator;
 import productDecorator.GiftWrappedDecorator;
 import products.Product;
 import products.ProductFactory;
@@ -20,7 +22,8 @@ import products.ProductFactory;
 @Controller
 public class ApplicationController {
     private static final String boarderMessage = "Hello and Welcome to the Shrek Merch Shop. Use code \'FARQUAAD\' for 25% off all hats!";
-    private final AtomicLong counter = new AtomicLong();
+    private final String DISCOUNT_CODE = "FARQUAAD";
+    private final Product.Categories DISCOUNT_CATEGORY = Product.Categories.Hats;
     ProductFactory productFactory = new ProductFactory();
     Catalog catalog = new Catalog();
 
@@ -50,24 +53,37 @@ public class ApplicationController {
         return "redirect:/";
     }
 
-    @PostMapping("/checkout")
-    public String checkout(@RequestParam String paymentType, @RequestParam(required = false, name="giftWrappedIndices") List<Integer> giftWrapped, Model model) {
+    @PostMapping("/addDiscount")
+    public String addDiscount(@RequestParam String discountCode) {
         Cart cart = Cart.getCart();
-        double amount = cart.getTotal();
+        List<Product> cartItems = new ArrayList<>(cart.getItems());
+        if(Objects.equals(discountCode, DISCOUNT_CODE)) {
+            for (Product product : cartItems) {
+                if(product.getCategory()==DISCOUNT_CATEGORY){
+                    Product productNew = new DiscountDecorator(product, 0.25);
+                    cart.replace(product, productNew);
+                }
+            }
+        }
 
+
+        // 3. Redirect back to the home page (refreshes the view)
+        return "redirect:/";
+    }
+
+    @PostMapping("/payment")
+    public String showPaymentPage(@RequestParam String paymentMethod, @RequestParam(required = false, name="giftWrappedIndices") List<Integer> giftWrapped,  Model model) {
+        Cart cart = Cart.getCart();
+        double cartTotal = cart.getTotal();
+
+        // 1. Choose the right strategy
         PaymentStrategy strategy;
-        switch(paymentType.toLowerCase()) {
+        switch (paymentMethod.toLowerCase()) {
             case "creditcard": strategy = new CreditCard(); break;
             case "cash": strategy = new Cash(); break;
             case "paymentplan": strategy = new PaymentPlan(); break;
-            default: strategy = null;
+            default: strategy = null; break;
         }
-
-        double finalAmount = strategy.calculateFinalAmount(amount);
-        model.addAttribute("result", finalAmount);
-        model.addAttribute("cart", Cart.getCart().getItems());
-
-
 
         for (int i = 0; i < cart.getItems().size(); i++) {
             Product product = cart.getItems().get(i);
@@ -81,23 +97,6 @@ public class ApplicationController {
             }
 
 
-        }
-        cart.clear();
-        return "paymentResult"; // show paymentResult.html
-    }
-
-    @PostMapping("/payment")
-    public String showPaymentPage(@RequestParam String paymentMethod, Model model) {
-        Cart cart = Cart.getCart();
-        double cartTotal = cart.getTotal();
-
-        // 1. Choose the right strategy
-        PaymentStrategy strategy;
-        switch (paymentMethod.toLowerCase()) {
-            case "creditcard": strategy = new CreditCard(); break;
-            case "cash": strategy = new Cash(); break;
-            case "paymentplan": strategy = new PaymentPlan(); break;
-            default: strategy = null; break;
         }
 
         // 2. Calculate the strategy-adjusted total (keeps strategy relevant)

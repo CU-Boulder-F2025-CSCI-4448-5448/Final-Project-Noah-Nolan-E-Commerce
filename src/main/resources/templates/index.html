@@ -18,7 +18,7 @@
         <form action="/add" method="post" style="display: inline;">
 
             <!-- Display Name and Price -->
-            <span th:text="${product.name}" style="font-weight: bold;">Name</span>
+            <span th:text="${product.getName()}" style="font-weight: bold;">Name</span>
             <span th:text="' ($' + ${product.price} + ')'">($0.00)</span>
 
             <!-- Hidden input stores the name of the product we want to add -->
@@ -31,7 +31,12 @@
 </ul>
 <form action="/submit_form" method="POST">
 </form>
+<form action="/addDiscount" method="POST">
+    <label for="discount">Have a discount code?</label><br>
+    <input type="text" id="discount" name="discountCode">
 
+    <button type="submit">Apply Discount</button><br><br>
+</form>
 <hr style="margin: 20px 0;">
 
 <!-- SECTION 2: CHECKOUT & CART -->
