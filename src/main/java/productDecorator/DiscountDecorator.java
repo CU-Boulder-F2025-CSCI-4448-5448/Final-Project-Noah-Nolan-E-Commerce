@@ -6,8 +6,8 @@ public class DiscountDecorator extends  ProductDecorator{
 
     private double discount = 0;
 
-    protected DiscountDecorator(Product product, String productName, double price, double discount) {
-        super(product, productName, price);
+    protected DiscountDecorator(Product product, double discount) {
+        super(product);
         this.discount = discount;
     }
 

@@ -8,7 +8,7 @@ public abstract class ProductDecorator extends Product {
     private String productName;
     private double price;
 
-    protected ProductDecorator(Product product, String productName, double price) {
+    protected ProductDecorator(Product product) {
         super(product.getName(), product.getPrice(), product.getCategory());
         this.product = product;
     }

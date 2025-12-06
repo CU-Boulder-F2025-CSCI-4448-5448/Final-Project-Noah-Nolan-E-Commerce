@@ -23,6 +23,17 @@ public class Cart {
         items.add(product);
     }
 
+    public void replace(Product productOld, Product productNew) {
+        if(items.contains(productOld)) {
+//            items.set(items.indexOf(productOld), productNew);
+            items.remove(productOld);
+            items.add(productNew);
+        }
+    }
+
+    public void remove(Product product) {
+        items.remove(product);
+    }
     public List<Product> getItems() {
         return items;
     }

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <!--Most of this was written with the help of Gemini-->
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>The Shrek E-Commerce Website!</title>
 </head>
@@ -48,11 +50,12 @@
 
     <!-- Loop through the CART (from session) -->
     <ul th:if="${not #lists.isEmpty(cart)}">
-        <li th:each="cartItem : ${cart}">
+        <li th:each="cartItem, iterStat : ${cart}">
             <span th:text="${cartItem.getName()}">Item</span>
             <span th:text="' - $' + ${cartItem.getPrice()}"></span>
-            <input type="checkbox" id="gift-wrapped" name="gift-wrapped"></input>
-            <label for="gift-wrapped"> Do you want this gift-wrapped? </label><br>
+            <input type="checkbox" id="giftWrappedIndices" name="giftWrappedIndices" th:value="${iterStat.index}"
+                   th:id="'wrap-' + ${iterStat.index}" ></input>
+            <label for="giftWrappedIndices"> Do you want this gift-wrapped? </label><br>
 
         </li>
     </ul>

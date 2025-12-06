@@ -6,7 +6,7 @@ public class LimitedEditionDecorator extends ProductDecorator{
     private double limitedEditionAddOn = 0;
 
     protected LimitedEditionDecorator(Product product, String productName, double price, double limitedEditionAddOn) {
-        super(product, productName, price);
+        super(product);
         this.limitedEditionAddOn = limitedEditionAddOn;
     }
 

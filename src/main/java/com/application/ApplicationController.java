@@ -51,12 +51,10 @@ public class ApplicationController {
     }
 
     @PostMapping("/checkout")
-    public String checkout(@RequestParam String paymentType, @RequestParam(required = false, name="giftWrapped") List<String> giftWrapped, Model model) {
-        // calculate total cart amount
+    public String checkout(@RequestParam String paymentType, @RequestParam(required = false, name="giftWrappedIndices") List<Integer> giftWrapped, Model model) {
         Cart cart = Cart.getCart();
         double amount = cart.getTotal();
 
-        // reuse your existing pay logic
         PaymentStrategy strategy;
         switch(paymentType.toLowerCase()) {
             case "creditcard": strategy = new CreditCard(); break;
@@ -70,21 +68,23 @@ public class ApplicationController {
         model.addAttribute("cart", Cart.getCart().getItems());
 
 
-        List<Product> finalProducts = new ArrayList<>();
 
         for (int i = 0; i < cart.getItems().size(); i++) {
             Product product = cart.getItems().get(i);
 
             boolean isGiftWrapped =
-                    giftWrapped != null && giftWrapped.contains("giftWrapped[" + i + "]");
+                    giftWrapped != null && giftWrapped.contains(i);
 
             if (isGiftWrapped) {
-                product = new GiftWrappedDecorator(product);
+                Product productNew = new GiftWrappedDecorator(product);
+                cart.replace(product, productNew);
             }
 
-            finalProducts.add(product);
+
         }
 
+
+        cart.clear();
         cart.clear();
 
         return "paymentResult"; // show paymentResult.html

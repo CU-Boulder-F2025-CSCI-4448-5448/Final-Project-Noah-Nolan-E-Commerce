@@ -13,7 +13,7 @@ public class Product {
         Shoes
     }
     private final UUID id;
-    private String name;
+    protected String name;
     private double price;
     private Categories category;
 
