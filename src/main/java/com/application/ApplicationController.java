@@ -52,6 +52,11 @@ public class ApplicationController {
         // 3. Redirect back to the home page (refreshes the view)
         return "redirect:/";
     }
+    @PostMapping("/checkout")
+    public String checkout() {
+        Cart.getCart().clear();
+        return "paymentResult";
+    }
 
     @PostMapping("/addDiscount")
     public String addDiscount(@RequestParam String discountCode) {
