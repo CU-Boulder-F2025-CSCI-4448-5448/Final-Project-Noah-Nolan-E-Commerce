@@ -4,8 +4,8 @@ import products.Product;
 
 public class GiftWrappedDecorator extends ProductDecorator{
 
-    protected GiftWrappedDecorator(Product product, String productName, double price) {
-        super(product, productName, price);
+    public GiftWrappedDecorator(Product product) {
+        super(product, product.getName(), product.getPrice());
     }
 
     @Override

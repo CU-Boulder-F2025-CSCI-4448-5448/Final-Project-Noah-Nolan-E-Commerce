@@ -13,6 +13,7 @@ import paymentStrategy.Cash;
 import paymentStrategy.CreditCard;
 import paymentStrategy.PaymentPlan;
 import paymentStrategy.PaymentStrategy;
+import productDecorator.GiftWrappedDecorator;
 import products.Product;
 import products.ProductFactory;
 
@@ -50,9 +51,10 @@ public class ApplicationController {
     }
 
     @PostMapping("/checkout")
-    public String checkout(@RequestParam String paymentType, Model model) {
+    public String checkout(@RequestParam String paymentType, @RequestParam(required = false, name="giftWrapped") List<String> giftWrapped, Model model) {
         // calculate total cart amount
-        double amount = Cart.getCart().getTotal();
+        Cart cart = Cart.getCart();
+        double amount = cart.getTotal();
 
         // reuse your existing pay logic
         PaymentStrategy strategy;
@@ -66,7 +68,22 @@ public class ApplicationController {
         String result = (strategy != null) ? strategy.pay(amount) : "Invalid payment method!";
         model.addAttribute("result", result);
 
-        Cart.getCart().clear();
+        cart.clear();
+
+        List<Product> finalProducts = new ArrayList<>();
+
+        for (int i = 0; i < cart.getItems().size(); i++) {
+            Product product = cart.getItems().get(i);
+
+            boolean isGiftWrapped =
+                    giftWrapped != null && giftWrapped.contains("giftWrapped[" + i + "]");
+
+            if (isGiftWrapped) {
+                product = new GiftWrappedDecorator(product);
+            }
+
+            finalProducts.add(product);
+        }
 
         return "paymentResult"; // show paymentResult.html
     }
