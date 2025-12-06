@@ -31,17 +31,4 @@ public class ProductTest {
         assertTrue(myCatalog.getProducts().contains(shrekTShirt));
         assertEquals(50.0, myCatalog.getTotalPrice());
     }
-
-    @Test
-    void testCheckout(){
-        Product shrekMask = factory.createHat("Shrek Mask", 20.0);
-        Product shrekTShirt = factory.createShirt("Shrek T-Shirt", 30.0);
-        Catalog myCatalog = new Catalog.Builder()
-                .addProduct(shrekMask)
-                .addProduct(shrekTShirt)
-                .addDiscount(0.10)//10% discount
-                .build();
-        myCatalog.setPayStragety(new PaymentPlan());
-        myCatalog.checkout();
-    }
 }

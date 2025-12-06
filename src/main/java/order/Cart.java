@@ -25,7 +25,6 @@ public class Cart {
 
     public void replace(Product productOld, Product productNew) {
         if(items.contains(productOld)) {
-//            items.set(items.indexOf(productOld), productNew);
             items.remove(productOld);
             items.add(productNew);
         }
