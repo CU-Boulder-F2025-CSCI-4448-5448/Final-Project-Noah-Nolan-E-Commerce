@@ -3,7 +3,6 @@ package com.application;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 import order.Cart;
 import order.Catalog;
@@ -22,7 +21,8 @@ import products.ProductFactory;
 @Controller
 public class ApplicationController {
     private static final String boarderMessage = "Hello and Welcome to the Shrek Merch Shop. Use code \'FARQUAAD\' for 25% off all hats!";
-    private final String DISCOUNT_CODE = "FARQUAAD";
+    private static final String DISCOUNT_CODE = "FARQUAAD";
+    private static final Double DISCOUNT_AMOUNT = 0.25;
     private final Product.Categories DISCOUNT_CATEGORY = Product.Categories.Hats;
     ProductFactory productFactory = new ProductFactory();
     Catalog catalog = new Catalog();
@@ -31,9 +31,11 @@ public class ApplicationController {
     public String index(Model model) {
         catalog = new Catalog.Builder()
                 .addProduct(productFactory.createHat("Shrek Mask", 20.00))
+                .addProduct(productFactory.createHat("Shrek Ears", 5.00))
                 .addProduct(productFactory.createShirt("Shrek T-Shirt", 30.00))
                 .addProduct(productFactory.createJacket("Leather Vest", 150.00))
                 .addProduct(productFactory.createMiscellaneousItem("Donkey Plushie", 12.99))
+                .addProduct(productFactory.createSock("Green Sock", 9.99))
                 .build();
 
 
@@ -49,7 +51,6 @@ public class ApplicationController {
         Product product = catalog.getProduct(productID);
         Cart.getCart().add(product);
 
-        // 3. Redirect back to the home page (refreshes the view)
         return "redirect:/";
     }
     @PostMapping("/checkout")
@@ -65,14 +66,13 @@ public class ApplicationController {
         if(Objects.equals(discountCode, DISCOUNT_CODE)) {
             for (Product product : cartItems) {
                 if(product.getCategory()==DISCOUNT_CATEGORY){
-                    Product productNew = new DiscountDecorator(product, 0.25);
+                    Product productNew = new DiscountDecorator(product, DISCOUNT_AMOUNT);
                     cart.replace(product, productNew);
                 }
             }
         }
 
 
-        // 3. Redirect back to the home page (refreshes the view)
         return "redirect:/";
     }
 
@@ -81,7 +81,6 @@ public class ApplicationController {
         Cart cart = Cart.getCart();
         double cartTotal = cart.getTotal();
 
-        // 1. Choose the right strategy
         PaymentStrategy strategy;
         switch (paymentMethod.toLowerCase()) {
             case "creditcard": strategy = new CreditCard(); break;
@@ -93,27 +92,21 @@ public class ApplicationController {
         for (int i = 0; i < cart.getItems().size(); i++) {
             Product product = cart.getItems().get(i);
 
-            boolean isGiftWrapped =
-                    giftWrapped != null && giftWrapped.contains(i);
+            boolean isGiftWrapped = giftWrapped != null && giftWrapped.contains(i);
 
             if (isGiftWrapped) {
                 Product productNew = new GiftWrappedDecorator(product);
                 cart.replace(product, productNew);
             }
-
-
         }
 
-        // 2. Calculate the strategy-adjusted total (keeps strategy relevant)
         double finalAmount =strategy.calculateFinalAmount(cartTotal);
 
-        // 3. Add to model
         model.addAttribute("cart", cart.getItems());
-        model.addAttribute("cartTotal", cartTotal);      // original total
-        model.addAttribute("finalAmount", finalAmount);  // strategy-adjusted total
+        model.addAttribute("cartTotal", cartTotal);
+        model.addAttribute("finalAmount", finalAmount);
         model.addAttribute("paymentMethod", paymentMethod);
 
-        // 4. Return the correct payment page
         switch (paymentMethod.toLowerCase()) {
             case "creditcard": return "cardPayment";
             case "cash": return "cashPayment";
