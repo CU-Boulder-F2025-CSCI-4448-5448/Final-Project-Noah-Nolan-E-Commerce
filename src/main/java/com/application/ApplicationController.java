@@ -67,8 +67,8 @@ public class ApplicationController {
 
         String result = (strategy != null) ? strategy.pay(amount) : "Invalid payment method!";
         model.addAttribute("result", result);
+        model.addAttribute("cart", Cart.getCart().getItems());
 
-        cart.clear();
 
         List<Product> finalProducts = new ArrayList<>();
 
@@ -84,6 +84,8 @@ public class ApplicationController {
 
             finalProducts.add(product);
         }
+
+//        cart.clear();
 
         return "paymentResult"; // show paymentResult.html
     }

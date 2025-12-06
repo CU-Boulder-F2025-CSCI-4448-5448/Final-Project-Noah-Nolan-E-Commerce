@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--Most of this was written with the help of Gemini-->
+<head>
+    <title>The Shrek E-Commerce Website!</title>
+</head>
+<body>
+<h1 style="background: lightgreen; padding: 10px;" >The Shrek E-Commerce Website!</h1>
+
+<h3>Your Cart:</h3>
+
+<!-- Loop through the CART (from session) -->
+<ul th:if="${not #lists.isEmpty(cart)}">
+    <li th:each="cartItem : ${cart}">
+        <span th:text="${cartItem.getName()}">Item</span>
+        <span th:text="' - $' + ${cartItem.getPrice()}"></span>
+    </li>
+</ul>
+
+<!-- Message if cart is empty -->
+<p th:if="${#lists.isEmpty(cart)}" style="color: gray; font-style: italic;">
+    Your swamp cart is empty! Add items above.
+</p>
+
+<p>Total Owed: $<span th:text="${cartTotal}"></span></p>
+
+<h3>Cash Payment</h3>
+
+<p>
+    To pay with cash, please send the total amount owed to:<br><br>
+    <strong>73 Fairy Ln</strong><br>
+    <strong>Duloc, Far Far Away</strong><br><br>
+    When we receive your payment, we will initiate your order fulfillment. Thank you.<br><br>
+    Press the button to confirm.
+</p>
+
+<button type="submit">Confirm</button>
+
+</body>
+</html>

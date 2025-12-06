@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--Most of this was written with the help of Gemini-->
+<head>
+    <title>The Shrek E-Commerce Website!</title>
+</head>
+<body>
+<h1 style="background: lightgreen; padding: 10px;" >The Shrek E-Commerce Website!</h1>
+
+<h3>Your Cart:</h3>
+
+<!-- Loop through the CART (from session) -->
+<ul th:if="${not #lists.isEmpty(cart)}">
+    <li th:each="cartItem : ${cart}">
+        <span th:text="${cartItem.getName()}">Item</span>
+        <span th:text="' - $' + ${cartItem.getPrice()}"></span>
+    </li>
+</ul>
+
+<!-- Message if cart is empty -->
+<p th:if="${#lists.isEmpty(cart)}" style="color: gray; font-style: italic;">
+    Your swamp cart is empty! Add items above.
+</p>
+
+<p>Total Owed: $<span th:text="${cartTotal}"></span></p>
+
+<h3>Credit Card Payment</h3>
+<p>Set up a payment plan. Pay $<span th:text="${cartTotal/12}"></span> every month for the next 12 months.</p>
+
+<form action="/checkout" method="post" style="max-width: 400px;">
+
+    <!-- Name on Card -->
+    <label for="cc-name">Name on Card:</label><br>
+    <input type="text" id="cc-name" name="cc-Name" placeholder="Shrek Ogre" required
+           style="width: 100%; margin-bottom: 10px;"><br>
+
+    <!-- Card Number -->
+    <label for="cc-number">Card Number:</label><br>
+    <input type="text" id="cc-number" name="ccNumber" placeholder="1234 5678 9012 3456" required
+           maxlength="19" style="width: 100%; margin-bottom: 10px;"><br>
+
+    <!-- Expiration + CVV -->
+    <div style="display: flex; gap: 10px;">
+
+        <div style="flex: 1;">
+            <label for="cc-exp">Expiration Date:</label><br>
+            <input type="text" id="cc-exp" name="ccExp" placeholder="MM/YY" required
+                   maxlength="5" style="width: 100%; margin-bottom: 10px;">
+        </div>
+
+        <div style="flex: 1;">
+            <label for="cc-cvv">CVV:</label><br>
+            <input type="password" id="cc-cvv" name="ccCvv" placeholder="123" required
+                   maxlength="4" style="width: 100%; margin-bottom: 10px;">
+        </div>
+
+    </div>
+
+    <!-- Payment Button -->
+    <button type="submit" style="margin-top: 10px;">Submit Payment</button>
+
+</form>
+
+<a href="/">Back to Home</a>
+</body>
+</html>
