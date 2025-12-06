@@ -82,11 +82,7 @@ public class ApplicationController {
 
 
         }
-
-
         cart.clear();
-        cart.clear();
-
         return "paymentResult"; // show paymentResult.html
     }
 
