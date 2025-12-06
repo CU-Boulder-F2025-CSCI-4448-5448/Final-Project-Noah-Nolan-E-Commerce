@@ -6,6 +6,9 @@
 <body>
 <h1 style="background: lightgreen; padding: 10px;" >The Shrek E-Commerce Website!</h1>
 
+<form action="/checkout" method="post">
+    <input type="hidden" name="paymentType" value="cash">
+
 <h3>Your Cart:</h3>
 
 <!-- Loop through the CART (from session) -->
@@ -32,8 +35,8 @@
     When we receive your payment, we will initiate your order fulfillment. Thank you.<br><br>
     Press the button to confirm.
 </p>
-
 <button type="submit">Confirm</button>
-
+</form>
+<a href="/">Back to Home</a>
 </body>
 </html>

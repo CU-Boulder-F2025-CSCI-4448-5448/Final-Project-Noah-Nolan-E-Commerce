@@ -85,9 +85,26 @@ public class ApplicationController {
             finalProducts.add(product);
         }
 
-//        cart.clear();
+        cart.clear();
 
         return "paymentResult"; // show paymentResult.html
+    }
+
+    @PostMapping("/payment")
+    public String showPaymentPage(@RequestParam String paymentMethod, Model model) {
+        model.addAttribute("cart", Cart.getCart().getItems());
+        model.addAttribute("cartTotal", Cart.getCart().getTotal());
+
+        switch (paymentMethod.toLowerCase()) {
+            case "creditcard":
+                return "cardPayment";
+            case "cash":
+                return "cashPayment";
+            case "paymentplan":
+                return "paymentPlanPayment";
+            default:
+                return "redirect:/";
+        }
     }
 }
 

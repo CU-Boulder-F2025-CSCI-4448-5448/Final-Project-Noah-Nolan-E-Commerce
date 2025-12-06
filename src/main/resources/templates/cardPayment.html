@@ -26,7 +26,7 @@
 <h3>Credit Card Payment</h3>
 
 <form action="/checkout" method="post" style="max-width: 400px;">
-
+    <input type="hidden" name="paymentType" value="creditCard">
     <!-- Name on Card -->
     <label for="cc-name">Name on Card:</label><br>
     <input type="text" id="cc-name" name="cc-Name" placeholder="Shrek Ogre" required
@@ -58,7 +58,6 @@
     <button type="submit" style="margin-top: 10px;">Submit Payment</button>
 
 </form>
-
 <a href="/">Back to Home</a>
 </body>
 </html>
