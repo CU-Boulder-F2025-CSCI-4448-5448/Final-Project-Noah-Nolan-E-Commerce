@@ -28,13 +28,6 @@
 <h3>Credit Card Payment</h3>
 <p>Set up a payment plan. Pay $<span th:text="${cartTotal/12}"></span> every month for the next 12 months.</p>
 
-<form action="/submit_form" method="POST">
-    <label for="discount">Have a discount code?</label><br>
-    <input type="text" id="discount" name="discountCode">
-
-    <button type="submit">Apply Discount</button><br><br>
-</form>
-
 <form action="/checkout" method="post" style="max-width: 400px;">
 
     <input type="hidden" name="paymentType" value="paymentPlan">

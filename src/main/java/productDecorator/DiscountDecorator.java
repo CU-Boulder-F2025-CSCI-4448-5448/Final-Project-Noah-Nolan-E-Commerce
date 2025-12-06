@@ -6,7 +6,7 @@ public class DiscountDecorator extends  ProductDecorator{
 
     private double discount = 0;
 
-    protected DiscountDecorator(Product product, double discount) {
+    public DiscountDecorator(Product product, double discount) {
         super(product);
         this.discount = discount;
     }

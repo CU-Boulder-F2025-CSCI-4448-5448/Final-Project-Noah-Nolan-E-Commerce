@@ -33,6 +33,7 @@ public class ApplicationController {
                 .addProduct(productFactory.createMiscellaneousItem("Donkey Plushie", 12.99))
                 .build();
 
+
         model.addAttribute("message", boarderMessage);
         model.addAttribute("products", catalog.getProducts());
         model.addAttribute("cart", Cart.getCart().getItems());
@@ -45,6 +46,7 @@ public class ApplicationController {
         Product product = catalog.getProduct(productID);
         Cart.getCart().add(product);
 
+        // 3. Redirect back to the home page (refreshes the view)
         return "redirect:/";
     }
 
@@ -65,6 +67,8 @@ public class ApplicationController {
         model.addAttribute("result", finalAmount);
         model.addAttribute("cart", Cart.getCart().getItems());
 
+
+
         for (int i = 0; i < cart.getItems().size(); i++) {
             Product product = cart.getItems().get(i);
 
@@ -79,7 +83,7 @@ public class ApplicationController {
 
         }
         cart.clear();
-        return "paymentResult";
+        return "paymentResult"; // show paymentResult.html
     }
 
     @PostMapping("/payment")
@@ -87,6 +91,7 @@ public class ApplicationController {
         Cart cart = Cart.getCart();
         double cartTotal = cart.getTotal();
 
+        // 1. Choose the right strategy
         PaymentStrategy strategy;
         switch (paymentMethod.toLowerCase()) {
             case "creditcard": strategy = new CreditCard(); break;
@@ -95,13 +100,16 @@ public class ApplicationController {
             default: strategy = null; break;
         }
 
+        // 2. Calculate the strategy-adjusted total (keeps strategy relevant)
         double finalAmount =strategy.calculateFinalAmount(cartTotal);
 
+        // 3. Add to model
         model.addAttribute("cart", cart.getItems());
         model.addAttribute("cartTotal", cartTotal);      // original total
         model.addAttribute("finalAmount", finalAmount);  // strategy-adjusted total
         model.addAttribute("paymentMethod", paymentMethod);
 
+        // 4. Return the correct payment page
         switch (paymentMethod.toLowerCase()) {
             case "creditcard": return "cardPayment";
             case "cash": return "cashPayment";
