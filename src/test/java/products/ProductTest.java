@@ -1,8 +1,9 @@
 package products;
 
+import com.application.products.Product;
+import com.application.products.ProductFactory;
 import order.Catalog;
 import org.junit.jupiter.api.Test;
-import paymentStrategy.PaymentPlan;
 
 import static org.junit.jupiter.api.Assertions.*;
 

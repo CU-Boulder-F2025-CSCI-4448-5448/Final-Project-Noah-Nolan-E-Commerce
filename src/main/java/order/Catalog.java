@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Catalog {
-    private UUID id;
     private List<Product> products;
     private Catalog(){};
     private Double discount=0.0;
@@ -16,7 +15,7 @@ public class Catalog {
         if (products == null) {
             return new ArrayList<>();
         }
-        return new ArrayList<>(products);
+        return new ArrayList<>(products);//returns this for encapsulation
     }
 
     public Product getProduct(String ID){
@@ -49,7 +48,6 @@ public class Catalog {
             Catalog catalog = new Catalog();
 
             catalog.products = this.products;
-            catalog.id = UUID.randomUUID();;
             catalog.discount = this.discount;
             return catalog;
         }
