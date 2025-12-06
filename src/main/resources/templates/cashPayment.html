@@ -6,7 +6,15 @@
 <body>
 <h1 style="background: lightgreen; padding: 10px;" >The Shrek E-Commerce Website!</h1>
 
+
+<form action="/submit_form" method="POST">
+    <label for="discount">Have a discount code?</label><br>
+    <input type="text" id="discount" name="discountCode">
+
+    <button type="submit">Apply Discount</button><br><br>
+</form>
 <form action="/checkout" method="post">
+
     <input type="hidden" name="paymentType" value="cash">
 
 <h3>Your Cart:</h3>
