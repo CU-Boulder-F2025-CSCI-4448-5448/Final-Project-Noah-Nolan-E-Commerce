@@ -10,7 +10,7 @@ public class GiftWrappedDecorator extends ProductDecorator{
 
     @Override
     public String getName() {
-        return this.name+ " (Gift Wrapped)";
+        return product.getName()+ " (Gift Wrapped)";
     }
 
 }
