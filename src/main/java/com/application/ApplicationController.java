@@ -92,18 +92,33 @@ public class ApplicationController {
 
     @PostMapping("/payment")
     public String showPaymentPage(@RequestParam String paymentMethod, Model model) {
-        model.addAttribute("cart", Cart.getCart().getItems());
-        model.addAttribute("cartTotal", Cart.getCart().getTotal());
+        Cart cart = Cart.getCart();
+        double cartTotal = cart.getTotal();
 
+        // 1. Choose the right strategy
+        PaymentStrategy strategy;
         switch (paymentMethod.toLowerCase()) {
-            case "creditcard":
-                return "cardPayment";
-            case "cash":
-                return "cashPayment";
-            case "paymentplan":
-                return "paymentPlanPayment";
-            default:
-                return "redirect:/";
+            case "creditcard": strategy = new CreditCard(); break;
+            case "cash": strategy = new Cash(); break;
+            case "paymentplan": strategy = new PaymentPlan(); break;
+            default: strategy = null; break;
+        }
+
+        // 2. Calculate the strategy-adjusted total (keeps strategy relevant)
+        double finalAmount =strategy.calculateFinalAmount(cartTotal);
+
+        // 3. Add to model
+        model.addAttribute("cart", cart.getItems());
+        model.addAttribute("cartTotal", cartTotal);      // original total
+        model.addAttribute("finalAmount", finalAmount);  // strategy-adjusted total
+        model.addAttribute("paymentMethod", paymentMethod);
+
+        // 4. Return the correct payment page
+        switch (paymentMethod.toLowerCase()) {
+            case "creditcard": return "cardPayment";
+            case "cash": return "cashPayment";
+            case "paymentplan": return "paymentPlanPayment";
+            default: return "redirect:/";
         }
     }
 }

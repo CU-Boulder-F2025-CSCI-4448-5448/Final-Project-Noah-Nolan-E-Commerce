@@ -21,7 +21,9 @@
     Your swamp cart is empty! Add items above.
 </p>
 
-<p>Total Owed: $<span th:text="${cartTotal}"></span></p>
+<p>Total Owed: $<span th:text="${finalAmount}"></span></p>
+<p>10% interest is added for all purchases made under a payment plan.</p>
+
 
 <h3>Credit Card Payment</h3>
 <p>Set up a payment plan. Pay $<span th:text="${cartTotal/12}"></span> every month for the next 12 months.</p>
