@@ -1,9 +1,9 @@
 package paymentStrategy;
 
 public class PaymentPlan implements PaymentStrategy {
+
     @Override
-    public String pay(double amount) {
-        double monthlyPay = amount /12;
-        return "Payment Plan set up: Pay $" + monthlyPay + " for the next 12 months.";
+    public double calculateFinalAmount(double cartTotal){
+        return cartTotal * 1.1;
     }
 }

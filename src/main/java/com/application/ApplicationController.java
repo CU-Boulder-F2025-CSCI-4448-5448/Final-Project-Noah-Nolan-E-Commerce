@@ -65,8 +65,8 @@ public class ApplicationController {
             default: strategy = null;
         }
 
-        String result = (strategy != null) ? strategy.pay(amount) : "Invalid payment method!";
-        model.addAttribute("result", result);
+        double finalAmount = strategy.calculateFinalAmount(amount);
+        model.addAttribute("result", finalAmount);
         model.addAttribute("cart", Cart.getCart().getItems());
 
 

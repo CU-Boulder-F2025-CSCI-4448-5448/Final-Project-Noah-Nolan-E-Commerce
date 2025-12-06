@@ -2,7 +2,7 @@ package paymentStrategy;
 
 public class CreditCard implements PaymentStrategy {
     @Override
-    public String pay(double amount) {
-        return "Paid $" + amount + " with credit card.";
+    public double calculateFinalAmount(double cartTotal){
+        return cartTotal * 1.03;
     }
 }
